@@ -1,5 +1,7 @@
 # Write your experiments in here! You can use the plotting helper functions from the previous assignment if you want.
 import numpy as np
+from ShortCutAgents import QLearningAgent, SARSAAgent, ExpectedSARSAAgent
+from ShortCutEnvironment import ShortcutEnvironment
 
 
 def print_greedy_actions(Q):
@@ -16,5 +18,32 @@ def print_greedy_actions(Q):
     print(print_string.tobytes().decode('utf-8'))
 
 
+def run_repetitions(n_rep, n_episodes, n_states, n_actions, agent_type, **kwargs):
+    # repetitions
+    print(n_rep, n_episodes)
+    for _ in range(n_rep):
+        print("lol")
+        # initialize environment (automatically resets)
+        env = ShortcutEnvironment()
+        # initialize agent
+        if agent_type == "qlearning":
+            agent = QLearningAgent(n_actions, n_states, kwargs["epsilon"], kwargs["alpha"])
+        # simulate one run
+        for _ in range(n_episodes):
+            state = env.state()
+            action = agent.select_action(state)
+            reward = env.step(action)
+            if env.done:
+                return
+            agent.update(state, action, reward)
+
+
+def experiment(alphas):
+    return
+
+
+
 if __name__ == "__main__":
     print_greedy_actions(np.random.rand(12*12, 4))
+    print('\n')
+    run_repetitions(10, 10, 12*12, 4, "qlearning", epsilon=0.1, alpha = 0.1)
