@@ -20,9 +20,7 @@ def print_greedy_actions(Q):
 
 def run_repetitions(n_rep, n_episodes, n_states, n_actions, agent_type, **kwargs):
     # repetitions
-    print(n_rep, n_episodes)
     for _ in range(n_rep):
-        print("lol")
         # initialize environment (automatically resets)
         env = ShortcutEnvironment()
         # initialize agent
@@ -33,17 +31,17 @@ def run_repetitions(n_rep, n_episodes, n_states, n_actions, agent_type, **kwargs
             state = env.state()
             action = agent.select_action(state)
             reward = env.step(action)
-            if env.done:
-                return
-            agent.update(state, action, reward)
+            state_prime = env.state()
+            if env.done():
+                break
+            agent.update(state, action, reward, state_prime)
 
 
 def experiment(alphas):
     return
 
 
-
 if __name__ == "__main__":
-    print_greedy_actions(np.random.rand(12*12, 4))
+    run_repetitions(100, 10000, 12*12, 4, "qlearning", epsilon=0.1, alpha = 0.5)
     print('\n')
-    run_repetitions(10, 10, 12*12, 4, "qlearning", epsilon=0.1, alpha = 0.1)
+    print_greedy_actions(np.random.rand(12*12, 4))

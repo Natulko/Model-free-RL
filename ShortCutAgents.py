@@ -12,13 +12,11 @@ class QLearningAgent(object):
         pass
         
     def select_action(self, state):
-        print(self.Q[state])
         a = np.argmax(self.Q[state])    # greedy action
         if random.random() < self.epsilon:
             a = random.choice(range(self.n_actions))
         return a
 
-        
     def update(self, state, action, reward, state_prime):  # TODO delete state_prime??
         # gamma is 1 based on description of the task
         self.Q[state, action] = self.Q[state, action] + self.alpha * (reward + np.max(self.Q[state_prime]) - self.Q[state, action])
