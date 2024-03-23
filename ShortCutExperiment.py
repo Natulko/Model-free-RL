@@ -3,6 +3,74 @@ from typing import Union
 import numpy as np
 from ShortCutAgents import QLearningAgent, SARSAAgent, ExpectedSARSAAgent
 from ShortCutEnvironment import ShortcutEnvironment
+import matplotlib.pyplot as plt
+from scipy.signal import savgol_filter
+
+
+# Helper classes and functions
+class LearningCurvePlot:
+
+    def __init__(self, title=None):
+        self.fig, self.ax = plt.subplots()
+        self.ax.set_xlabel('Time')
+        self.ax.set_ylabel('Reward')
+        self.ax.set_ylim([0, 1.0])
+        if title is not None:
+            self.ax.set_title(title)
+
+    def add_curve(self, y, label=None):
+        """
+        y: vector of average reward results
+        label: string to appear as label in plot legend
+        """
+        if label is not None:
+            self.ax.plot(y, label=label)
+        else:
+            self.ax.plot(y)
+
+    def save(self, name='test.png'):
+        """
+        name: string for filename of saved figure
+        """
+        self.ax.legend()
+        self.fig.savefig(name, dpi=300)
+
+
+class ComparisonPlot:
+
+    def __init__(self, title=None):
+        self.fig, self.ax = plt.subplots()
+        self.ax.set_xlabel('Parameter (exploration)')
+        self.ax.set_ylabel('Average reward')
+        self.ax.set_xscale('log')
+        if title is not None:
+            self.ax.set_title(title)
+
+    def add_curve(self, x, y, label=None):
+        """
+        x: vector of parameter values
+        y: vector of associated mean reward for the parameter values in x
+        label: string to appear as label in plot legend
+        """
+        if label is not None:
+            self.ax.plot(x, y, label=label)
+        else:
+            self.ax.plot(x, y)
+
+    def save(self, name='test.png'):
+        """
+        :param: name - string for filename of saved figure
+        """
+        self.ax.legend()
+        self.fig.savefig(name, dpi=300)
+
+
+def smooth(y, window, poly=1):
+    """
+    y: vector to be smoothed
+    window: size of the smoothing window
+    """
+    return savgol_filter(y, window, poly)
 
 
 def print_greedy_actions(Q):
@@ -65,13 +133,13 @@ def run_repetitions(
         curve += repetition_curve
     return curve / n_repetitions
 
+
 def experiment(alphas):
     return
 
 
 if __name__ == "__main__":
     environment = ShortcutEnvironment()
-    #Q_agent = QLearningAgent(environment, epsilon=0.1, alpha=0.5)
     rewards = run_repetitions(
         environment,
         agent_type="q-learning",
