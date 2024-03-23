@@ -18,9 +18,9 @@ def print_greedy_actions(Q):
     print(print_string.tobytes().decode('utf-8'))
 
 
-def run_repetitions(env, agent, n_rep, n_episodes):
-    for _ in range(n_rep):  # repetitions; each repetition is one run
-        for _ in range(n_episodes):  # simulate one run
+def run_repetition(env, agent, n_episodes, n_steps):
+    for _ in range(n_episodes):  # repetitions
+        for _ in range(n_steps):  # simulate one run
             state = env.state()
             action = agent.select_action(state)
             reward = env.step(action)
@@ -38,6 +38,6 @@ def experiment(alphas):
 if __name__ == "__main__":
     environment = ShortcutEnvironment()
     Q_agent = QLearningAgent(environment, epsilon=0.1, alpha=0.5)
-    run_repetitions(environment, Q_agent, n_rep=100, n_episodes=10000)
+    run_repetition(environment, Q_agent, n_episodes=100, n_steps=10000)
     environment.render()
     print_greedy_actions(Q_agent.Q)
