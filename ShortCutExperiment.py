@@ -12,9 +12,8 @@ class LearningCurvePlot:
 
     def __init__(self, title=None):
         self.fig, self.ax = plt.subplots()
-        self.ax.set_xlabel('Time')
+        self.ax.set_xlabel('Episode')
         self.ax.set_ylabel('Reward')
-        self.ax.set_ylim([0, 1.0])
         if title is not None:
             self.ax.set_title(title)
 
@@ -87,6 +86,7 @@ def print_greedy_actions(Q):
     print(print_string.tobytes().decode('utf-8'))
 
 
+# Experiment functions
 def run_repetition(
         env: ShortcutEnvironment,
         agent: Union[QLearningAgent, SARSAAgent, ExpectedSARSAAgent],
@@ -134,21 +134,48 @@ def run_repetitions(
     return curve / n_repetitions
 
 
-def experiment(alphas):
-    return
+def experiment(
+        env: ShortcutEnvironment,
+        n_repetitions: int,
+        n_episodes: int,
+        n_steps: int,
+        smoothing_window: int,
+        epsilon: float,
+        alphas: list,
+):
+    # Assignment 1 - Q-learning
+    QLearn_plot = LearningCurvePlot(title="Q-learning learning curves based on alpha hyperparam.")
+    for i in range(len(alphas)):
+        alpha = alphas[i]
+        curve = run_repetitions(
+            env=env,
+            agent_type="q-learning",
+            n_repetitions=n_repetitions,
+            n_episodes=n_episodes,
+            n_steps=n_steps,
+            epsilon=epsilon,
+            alpha=alpha
+        )
+        QLearn_plot.add_curve(smooth(curve, smoothing_window), f"alpha={alpha}")
+    QLearn_plot.save("Q-Learning plot")
 
 
 if __name__ == "__main__":
+    # Setting up the parameters of the experiment
     environment = ShortcutEnvironment()
-    rewards = run_repetitions(
-        environment,
-        agent_type="q-learning",
-        n_repetitions=50,
-        n_episodes=100,
-        n_steps=100,
-        epsilon=0.1,
-        alpha=0.5
+    n_repetitions = 50
+    n_episodes = 100
+    n_steps = 100
+    alphas = [0.01, 0.1, 0.5, 0.9]
+    epsilon = 0.1
+    smoothing_window = 31
+    # The experiment itself
+    experiment(
+        env=environment,
+        n_repetitions=n_repetitions,
+        n_episodes=n_episodes,
+        n_steps=n_steps,
+        alphas=alphas,
+        epsilon=epsilon,
+        smoothing_window=smoothing_window
     )
-    print(rewards)
-    print(rewards.shape)
-    environment.render()
