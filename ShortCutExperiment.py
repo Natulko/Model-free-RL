@@ -1,6 +1,7 @@
 # Write your experiments in here! You can use the plotting helper functions from the previous assignment if you want.
 from typing import Union
 import numpy as np
+from tqdm import tqdm
 from ShortCutAgents import QLearningAgent, SARSAAgent, ExpectedSARSAAgent
 from ShortCutEnvironment import ShortcutEnvironment, WindyShortcutEnvironment
 import matplotlib.pyplot as plt
@@ -158,7 +159,7 @@ def experiment(
     q_agent_max_val = -np.inf
     q_agent_best_alpha = alphas[0]
     QLearn_plot = LearningCurvePlot(title="Q-learning learning curves based on alpha hyperparam.")
-    for i in range(len(alphas)):
+    for i in tqdm(range(len(alphas))):  # TODO: delete tqdm
         alpha = alphas[i]
         curve = run_repetitions(
             env=env,
@@ -189,7 +190,7 @@ def experiment(
     sarsa_agent_max_val = -np.inf
     sarsa_agent_best_alpha = alphas[0]
     SARSA_plot = LearningCurvePlot(title="SARSA learning curves based on alpha hyperparam.")
-    for i in range(len(alphas)):
+    for i in tqdm(range(len(alphas))):  # TODO: delete tqdm
         alpha = alphas[i]
         curve = run_repetitions(
             env=env,
@@ -237,7 +238,7 @@ def experiment(
     exp_sarsa_agent_max_val = -np.inf
     exp_sarsa_agent_best_alpha = alphas[-1]
     Ex_SARSA_plot = LearningCurvePlot(title="Expected SARSA learning curves based on alpha hyperparam.")
-    for i in range(len(alphas)):
+    for i in tqdm(range(len(alphas))):  # TODO: delete tqdm
         alpha = alphas[i]
         curve = run_repetitions(
             env=env,
