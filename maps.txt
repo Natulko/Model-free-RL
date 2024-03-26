@@ -1,0 +1,85 @@
+(base) Admins-MacBook-Pro-7:ass2-Monte_Carlo admin$ python ShortCutExperiment.py
+
+Q-LEARNING GREEDY POLICY: 
+
+<^>><^>vv>^^
+>>>>v>vvv^>v
+^>vvvvvvv>vv
+v>>>>>>>vv<^
+>^^^0000v<<v
+vvvv0000vv<<
+>vvv0000v<vv
+^>vv00000<<v
+>v>v00>000<<
+>>>>>>^00<vv
+<^>^0000v<v>
+^<v^0000v>vv
+
+
+SARSA GREEDY POLICY: 
+
+>>>^>>v>vvv^
+>>>>>v>vvvv<
+>>>^>>>>>vvv
+^^^^>^^>>vv>
+^^^^0000>vvv
+^>^<0000vv<v
+^^^^0000>vvv
+^^<<00000vvv
+^^<<00>000<<
+^^<v<><00^^v
+>^^v0000v<v^
+v>^v0000vvvv
+
+
+~~~ WINDY WEATHER ~~~
+
+
+Q-LEARNING GREEDY POLICY WITH WIND:
+
+v^>>^v>>>>>^
+^^v^<>^^^>^^
+^^^>>^^>>^<>
+^^^^^^^^v^^<
+^<^^0000>>^^
+^^^^0000vv^>
+^^^^0000v<^>
+^^^^0000^<^^
+^^^^00<<0^<^
+v^^^^^^0^^^^
+^^^^0000^^<v
+<^^^0000^^>^
+
+
+SARSA GREEDY POLICY WITH WIND:
+
+^^v>>>^^v>>^
+^>>^^^^^v^^^
+^^^^<^^><>v<
+^^^<^<^>>^>^
+^^^<0000>^v<
+^^^<0000vv^<
+^^^<0000v<>^
+^^^^0000v><<
+^^^v00<>0^^>
+^^><>^<0^^^^
+^^^^0000^<^^
+^v^^0000>v^v
+
+
+EXPECTED SARSA GREEDY POLICY: 
+
+<^><>>v>vvvv
+<v>>>>>>vvv>
+>>>>>>>>>vv>
+>^^^^^^>>vvv
+^^^^0000>vvv
+>^^^0000>vvv
+^^^<0000vvvv
+^^^<00000vvv
+^^^<00>000<<
+^^^>>>^00^<>
+v^^<0000^<<<
+v<^<0000>^v^
+
+(base) Admins-MacBook-Pro-7:ass2-Monte_Carlo admin$ 
