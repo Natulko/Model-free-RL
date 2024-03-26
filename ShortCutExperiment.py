@@ -1,7 +1,6 @@
 # Write your experiments in here! You can use the plotting helper functions from the previous assignment if you want.
 from typing import Union
 import numpy as np
-from tqdm import tqdm
 from ShortCutAgents import QLearningAgent, SARSAAgent, ExpectedSARSAAgent
 from ShortCutEnvironment import ShortcutEnvironment, WindyShortcutEnvironment
 import matplotlib.pyplot as plt
@@ -151,15 +150,14 @@ def experiment(
     alpha = 0.1
     q_agent = QLearningAgent(env, epsilon=epsilon, alpha=alpha)
     run_repetition(env, q_agent, n_episodes=n_episodes_single, n_steps=n_steps)
-    print("Q-LEARNING GREEDY POLICY: \n")
+    print("\nQ-LEARNING GREEDY POLICY: \n")
     print_greedy_actions(q_agent.Q)
-    print("\n")
 
     # different alpha values
-    q_agent_max_val = -np.inf
+    q_agent_max_auc = -np.inf
     q_agent_best_alpha = alphas[0]
     QLearn_plot = LearningCurvePlot(title="Q-learning learning curves based on alpha hyperparam.")
-    for i in tqdm(range(len(alphas))):  # TODO: delete tqdm
+    for i in range(len(alphas)):
         alpha = alphas[i]
         curve = run_repetitions(
             env=env,
@@ -171,8 +169,10 @@ def experiment(
             alpha=alpha
         )
         QLearn_plot.add_curve(smooth(curve, smoothing_window), f"alpha={alpha}")
-        if curve[-1] > q_agent_max_val:
-            q_agent_max_val = curve[-1]
+        curve_auc = np.trapz(curve)  # We get the AUC characteristic (approximation)
+        # to compare the curves and select the best for the inter-model comparison
+        if curve_auc > q_agent_max_auc:  # We maximize the curve as the reward and the AUC are always negative
+            q_agent_max_auc = curve_auc
             q_agent_best_alpha = alpha
     QLearn_plot.save("Q-Learning_plot")
 
@@ -182,15 +182,14 @@ def experiment(
     alpha = 0.1
     sarsa_agent = SARSAAgent(env, epsilon=epsilon, alpha=alpha)
     run_repetition(env, sarsa_agent, n_episodes=n_episodes_single, n_steps=n_steps)
-    print("SARSA GREEDY POLICY: \n")
+    print("\nSARSA GREEDY POLICY: \n")
     print_greedy_actions(sarsa_agent.Q)
-    print("\n")
 
     # different alpha values
-    sarsa_agent_max_val = -np.inf
+    sarsa_agent_max_auc = -np.inf
     sarsa_agent_best_alpha = alphas[0]
     SARSA_plot = LearningCurvePlot(title="SARSA learning curves based on alpha hyperparam.")
-    for i in tqdm(range(len(alphas))):  # TODO: delete tqdm
+    for i in range(len(alphas)):
         alpha = alphas[i]
         curve = run_repetitions(
             env=env,
@@ -202,8 +201,10 @@ def experiment(
             alpha=alpha
         )
         SARSA_plot.add_curve(smooth(curve, smoothing_window), f"alpha={alpha}")
-        if curve[-1] > sarsa_agent_max_val:
-            sarsa_agent_max_val = curve[-1]
+        curve_auc = np.trapz(curve)  # We get the AUC characteristic (approximation)
+        # to compare the curves and select the best for the inter-model comparison
+        if curve_auc > sarsa_agent_max_auc:  # We maximize the curve as the reward is always negative
+            sarsa_agent_max_auc = curve_auc
             sarsa_agent_best_alpha = alpha
     SARSA_plot.save("SARSA_plot")
 
@@ -215,14 +216,12 @@ def experiment(
     sarsa_agent_wind = SARSAAgent(windy_env, epsilon=epsilon, alpha=alpha)
     run_repetition(windy_env, sarsa_agent_wind, n_episodes=n_episodes_single, n_steps=n_steps)
 
-    print("~~~ WINDY WEATHER ~~~\n")
+    print("\n~~~ WINDY WEATHER ~~~\n")
 
-    print("Q-LEARNING GREEDY POLICY WITH WIND:")
+    print("\nQ-LEARNING GREEDY POLICY WITH WIND:\n")
     print_greedy_actions(q_agent_wind.Q)
-    print("\n")
-    print("SARSA GREEDY POLICY WITH WIND:")
+    print("\nSARSA GREEDY POLICY WITH WIND:\n")
     print_greedy_actions(sarsa_agent_wind.Q)
-    print("\n")
 
     # Assignment 4 - Expected SARSA
 
@@ -230,15 +229,14 @@ def experiment(
     alpha = 0.1
     exp_sarsa_agent = ExpectedSARSAAgent(env, epsilon=epsilon, alpha=alpha)
     run_repetition(env, exp_sarsa_agent, n_episodes=n_episodes_single, n_steps=n_steps)
-    print("EXPECTED SARSA GREEDY POLICY: \n")
+    print("\nEXPECTED SARSA GREEDY POLICY: \n")
     print_greedy_actions(exp_sarsa_agent.Q)
-    print("\n")
 
     # different alpha values
-    exp_sarsa_agent_max_val = -np.inf
+    exp_sarsa_agent_max_auc = -np.inf
     exp_sarsa_agent_best_alpha = alphas[-1]
     Ex_SARSA_plot = LearningCurvePlot(title="Expected SARSA learning curves based on alpha hyperparam.")
-    for i in tqdm(range(len(alphas))):  # TODO: delete tqdm
+    for i in range(len(alphas)):
         alpha = alphas[i]
         curve = run_repetitions(
             env=env,
@@ -250,8 +248,10 @@ def experiment(
             alpha=alpha
         )
         Ex_SARSA_plot.add_curve(smooth(curve, smoothing_window), f"alpha={alpha}")
-        if curve[-1] < exp_sarsa_agent_max_val:
-            exp_sarsa_agent_max_val = curve[-1]
+        curve_auc = np.trapz(curve)  # We get the AUC characteristic (approximation)
+        # to compare the curves and select the best for the inter-model comparison
+        if curve_auc > exp_sarsa_agent_max_auc:  # We maximize the curve as the reward is always negative
+            exp_sarsa_agent_max_auc = curve_auc
             exp_sarsa_agent_best_alpha = alpha
     Ex_SARSA_plot.save("Exp_SARSA_plot")
 
