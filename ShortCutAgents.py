@@ -4,7 +4,8 @@ import numpy as np
 
 class QLearningAgent(object):
 
-    def __init__(self, env, epsilon, alpha):  # TODO: delete alpha??
+    def __init__(self, env, epsilon, alpha):
+        # make use of env to get the number of actions and states
         self.n_actions = env.action_size()
         self.n_states = env.state_size()
         self.epsilon = epsilon
@@ -26,6 +27,7 @@ class QLearningAgent(object):
 class SARSAAgent(object):
 
     def __init__(self, env, epsilon, alpha):
+        # make use of env to get the number of actions and states
         self.n_actions = env.action_size()
         self.n_states = env.state_size()
         self.epsilon = epsilon
@@ -47,6 +49,7 @@ class SARSAAgent(object):
 class ExpectedSARSAAgent(object):
 
     def __init__(self, env, epsilon, alpha):
+        # make use of env to get the number of actions and states
         self.n_actions = env.action_size()
         self.n_states = env.state_size()
         self.epsilon = epsilon
