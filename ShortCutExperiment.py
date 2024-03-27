@@ -102,10 +102,10 @@ def run_repetition(
             reward = env.step(action)
             cum_reward += reward
             state_prime = env.state()
-            if env.done():
-                break
             agent.update(state, action, reward, state_prime)
             episodes_rewards[i] = cum_reward
+            if env.done():
+                break
         env.reset()
 
     return episodes_rewards
