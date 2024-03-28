@@ -65,6 +65,6 @@ class ExpectedSARSAAgent(object):
 
     def update(self, state, action, reward, state_prime):
         Q_expected = np.sum(self.Q[state_prime] * (self.epsilon / self.n_actions)) + \
-            np.max(self.Q[state_prime]) * (1 - self.epsilon)
+            np.max(self.Q[state_prime]) * (1 - self.epsilon)  # calculate expected Q value
         self.Q[state, action] = self.Q[state, action] + self.alpha * \
             (reward + self.gamma * Q_expected - self.Q[state, action])

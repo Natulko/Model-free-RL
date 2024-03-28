@@ -93,6 +93,19 @@ def run_repetition(
         n_episodes: int,
         n_steps: int
 ) -> np.array:
+    """
+    Runs a single repetition of an experiment.
+
+    This function simulates a series of episodes in the given environment using the specified agent. For each episode,
+    it simulates actions up to a maximum number of steps or until the environment signals completion. The cumulative
+    reward for each episode is recorded.
+
+    :param env: The environment in which the agent operates. Must be an instance of ShortcutEnvironment or WindyShortcutEnvironment.
+    :param agent: The agent that will interact with the environment. Must be an instance of QLearningAgent, SARSAAgent, or ExpectedSARSAAgent.
+    :param n_episodes: The number of episodes to simulate.
+    :param n_steps: The maximum number of steps to simulate for each episode.
+    :return: A numpy array containing the cumulative reward for each episode.
+    """
     episodes_rewards = np.zeros(n_episodes)
     for i in range(n_episodes):  # for each episode
         cum_reward = 0
@@ -119,6 +132,21 @@ def run_repetitions(
         n_steps: int,
         **kwargs
 ) -> np.array:
+    """
+    Runs multiple repetitions of an experiment.
+
+    This function simulates multiple repetitions of an experiment in the given environment using agents of the specified type. 
+    For each repetition, it runs a series of episodes, simulating actions up to a maximum number of steps or until the environment 
+    signals completion. The average cumulative reward across all repetitions for each episode is calculated and returned.
+
+    :param env: The environment in which the agents operate. Must be an instance of ShortcutEnvironment.
+    :param agent_type: The type of agent to use for the experiment. Must be one of "q-learning", "SARSA", or "ExpectedSARSA".
+    :param n_repetitions: The number of repetitions of the experiment to run.
+    :param n_episodes: The number of episodes to simulate in each repetition.
+    :param n_steps: The maximum number of steps to simulate for each episode.
+    :param kwargs: Additional keyword arguments to pass to the agent constructor. Typically includes learning rate (alpha) and exploration rate (epsilon).
+    :return: A numpy array containing the average cumulative reward for each episode across all repetitions.
+    """
     curve = np.zeros(n_episodes)
     for _ in range(n_repetitions):
         if agent_type == "q-learning":
@@ -144,6 +172,25 @@ def experiment(
         epsilon: float,
         alphas: list,
 ):
+    """
+    Conducts experiments comparing Q-learning and SARSA algorithms.
+
+    This function runs experiments to compare the performance of Q-learning and SARSA algorithms in a given environment. 
+    It performs experiments with a single fixed alpha value and multiple alpha values to observe the impact of the learning 
+    rate on the algorithms' performance. The function plots learning curves for each alpha value and identifies the best 
+    alpha based on the area under the curve (AUC) metric. The experiments are conducted in both a standard environment and 
+    a windy environment to observe the algorithms' robustness under different conditions.
+
+    :param env: The standard environment in which the agents operate. Must be an instance of ShortcutEnvironment.
+    :param windy_env: The windy environment in which the agents operate. Must be an instance of WindyShortcutEnvironment.
+    :param n_repetitions: The number of repetitions of the experiment to run for averaging results.
+    :param n_episodes: The number of episodes to simulate in each repetition for the multi-alpha experiment.
+    :param n_episodes_single: The number of episodes to simulate in the single-alpha experiment.
+    :param n_steps: The maximum number of steps to simulate for each episode.
+    :param smoothing_window: The window size for smoothing the learning curves.
+    :param epsilon: The exploration rate for the agents.
+    :param alphas: A list of learning rates (alpha) to test in the experiments.
+    """
     # Assignment 1 - Q-learning
 
     # single experiment
